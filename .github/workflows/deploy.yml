@@ -49,11 +49,17 @@ jobs:
         run: |
           cd infra/terraform
           terraform init 
-
-      - name: Import existing Lambda if exists
+      - name: Import existing resources
         run: |
           cd infra/terraform
-          terraform import aws_lambda_function.api cloud-pos-api || true
+          terraform import aws_lambda_function.api_lambda api_lambda
+          terraform import aws_iam_role.lambda_execution_role lambda_execution_role
+          terraform import aws_iam_role_policy.lambda_execution_policy lambda_execution_policy
+          terraform import aws_api_gateway_rest_api.api_gateway api_gateway
+          terraform import aws_api_gateway_resource.api_resource api_resource
+          terraform import aws_api_gateway_method.api_method api_method
+          terraform import aws_api_gateway_integration.api_integration api_integration
+          terraform import aws_api_gateway_deployment.api_deployment api_deployment    
 
       - name: Terraform Apply
         run: |
