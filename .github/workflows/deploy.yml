@@ -41,3 +41,16 @@ jobs:
         run: |
           cd backend/api/dist
           zip dist.zip lambda.js
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        
+      - name: Terraform Init 
+        run: |
+          cd infra/terraform
+          terraform init 
+      - name: Terraform Apply
+        run: |
+          cd infra/terraform
+          terraform apply -auto-approve     
+    
