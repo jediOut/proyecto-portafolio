@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "terraform-state-jedidevops"
+    key    = "cloud-pos/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 # resource "aws_iam_role" "lambda_role" {
 #   name = "cloud_pos_lambda_role"
 #
