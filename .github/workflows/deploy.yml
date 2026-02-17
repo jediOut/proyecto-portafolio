@@ -39,8 +39,8 @@ jobs:
 
       - name: Zip Lambda
         run: |
-          cd backend/api
-          zip dist.zip dist/lambda.js
+          cd backend/api/dist
+          zip ../dist.zip lambda.js
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
