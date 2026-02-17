@@ -37,7 +37,7 @@ resource "aws_lambda_function" "api" {
   handler       = "lambda.handler"
   runtime       = "nodejs18.x"
 
-  role =  "aws_iam_role.lambda_role.arn"
+  role =  aws_iam_role.lambda_role.arn
 }
 
 resource "aws_apigatewayv2_api" "http_api" {
