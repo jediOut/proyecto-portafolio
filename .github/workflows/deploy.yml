@@ -1,0 +1,43 @@
+name: Deploy Serverless API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::687337999212:role/github-actions-oidc-role
+          aws-region: us-east-1  
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install backend dependencies
+        run: |
+          cd backend/api
+          npm install
+
+      - name: Build bundle
+        run: |
+          cd backend/api
+          npx esbuild src/lambda.ts --bundle --platform=node --target=node18 --outfile=dist/lambda.js --external:class-validator --external:class-transformer --external:@nestjs/websockets/socket-module --external:@nestjs/microservices --external:@nestjs/microservices/microservices-module
+
+      - name: Zip Lambda
+        run: |
+          cd backend/api/dist
+          zip dist.zip lambda.js
